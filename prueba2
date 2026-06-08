@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego de Animales</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        text-align:center;
+        background:#e8f5e9;
+        margin:0;
+        padding:20px;
+    }
+
+    h1{
+        color:#2e7d32;
+    }
+
+    .juego{
+        background:white;
+        max-width:600px;
+        margin:auto;
+        padding:20px;
+        border-radius:15px;
+        box-shadow:0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #emoji{
+        font-size:100px;
+        margin:20px;
+    }
+
+    button{
+        padding:12px 20px;
+        margin:10px;
+        font-size:18px;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+        background:#4caf50;
+        color:white;
+    }
+
+    button:hover{
+        background:#388e3c;
+    }
+
+    #mensaje{
+        font-size:22px;
+        font-weight:bold;
+        margin-top:20px;
+    }
+
+    #puntos{
+        font-size:20px;
+        color:#1565c0;
+    }
+</style>
+</head>
+<body>
+
+<h1>🐾 Aprende los Animales 🐾</h1>
+
+<div class="juego">
+    <h2>¿Cómo se llama este animal?</h2>
+
+    <div id="emoji">🐶</div>
+
+    <div id="opciones"></div>
+
+    <p id="mensaje"></p>
+    <p id="puntos">Puntos: 0</p>
+
+    <button onclick="siguienteAnimal()">Siguiente</button>
+</div>
+
+<script>
+const animales = [
+    {
+        emoji:"🐶",
+        nombre:"Perro",
+        opciones:["Perro","Gato","Pájaro"]
+    },
+    {
+        emoji:"🐱",
+        nombre:"Gato",
+        opciones:["Conejo","Gato","Pez"]
+    },
+    {
+        emoji:"🐰",
+        nombre:"Conejo",
+        opciones:["Caballo","Conejo","Perro"]
+    },
+    {
+        emoji:"🐦",
+        nombre:"Pájaro",
+        opciones:["Pájaro","Gato","Vaca"]
+    },
+    {
+        emoji:"🐟",
+        nombre:"Pez",
+        opciones:["Pez","Conejo","Perro"]
+    }
+];
+
+let indice = 0;
+let puntos = 0;
+
+function mostrarAnimal(){
+    const animal = animales[indice];
+
+    document.getElementById("emoji").textContent = animal.emoji;
+
+    let html = "";
+    animal.opciones.forEach(opcion=>{
+        html += `<button onclick="verificar('${opcion}')">${opcion}</button>`;
+    });
+
+    document.getElementById("opciones").innerHTML = html;
+    document.getElementById("mensaje").textContent = "";
+}
+
+function verificar(respuesta){
+    const animal = animales[indice];
+
+    if(respuesta === animal.nombre){
+        document.getElementById("mensaje").textContent = "✅ ¡Correcto!";
+        document.getElementById("mensaje").style.color = "green";
+        puntos++;
+    }else{
+        document.getElementById("mensaje").textContent =
+        "❌ Incorrecto. Era: " + animal.nombre;
+        document.getElementById("mensaje").style.color = "red";
+    }
+
+    document.getElementById("puntos").textContent =
+    "Puntos: " + puntos;
+}
+
+function siguienteAnimal(){
+    indice++;
+
+    if(indice >= animales.length){
+        document.querySelector(".juego").innerHTML =
+        `<h2>🎉 ¡Juego terminado!</h2>
+         <p>Tu puntuación fue: <strong>${puntos} de ${animales.length}</strong></p>
+         <button onclick="location.reload()">Jugar otra vez</button>`;
+        return;
+    }
+
+    mostrarAnimal();
+}
+
+mostrarAnimal();
+</script>
+
+</body>
+</html>
